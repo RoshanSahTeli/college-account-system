@@ -1,0 +1,64 @@
+<html th:replace="admin_base::layout(~{::section})">
+
+<body>
+	<section>
+		<main id="main" class="main">
+
+			<div class="pagetitle">
+				<h1>Lumbini ICT Campus</h1>
+
+			</div><!-- End Page Title -->
+
+			<section class="section">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title" th></h5>
+
+								<!-- Add the button here -->
+								<div class="mb-3">
+									<a th:href="@{/admin/increment_semester(id=${semId})}" class="btn btn-primary">Increment Semester</a>
+								</div>
+
+								<table class="table datatable">
+									<thead>
+										<tr>
+											<th>Image</th>
+											<th>ID</th>
+											<th>Name</th>
+											<th>Email</th>
+											<th>Contact</th>
+											<th>Pending Fee</th>
+											<th>Previous Fee</th>
+											<th>Update</th>
+											<th>Pay</th>
+											<th>Statement</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="e:${users}">
+											<td><img th:src="@{'/images/'+${e.image}}" style="width: 40px;"></td>
+											<td th:text="${e.uid}"></td>
+											<td th:text="${e.name}"></td>
+											<td th:text="${e.email}"></td>
+											<td th:text="${e.contact}"></td>
+											<td th:text="${e.pendingFee}"></td>
+											<td th:text="${e.previousFee}"></td>
+											<td><a class="btn btn-primary">update</a></td>
+											<td><a class="btn btn-success" th:href="@{'/admin/payment_form/'+${e.uid}}">pay</a>  </td>
+											<td> <a class="btn btn-primary" th:href="@{'/admin/statement/'+${e.uid}}">statement</a> </td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- End Table with stripped rows -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+	</section>
+</body>
+
+</html>
