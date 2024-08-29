@@ -1,15 +1,20 @@
 package com.account.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.account.DTO.semesterStudentCount;
 import com.account.Repository.courseRepository;
@@ -25,6 +30,12 @@ import jakarta.transaction.Transactional;
 
 @Component
 public class adminService {
+
+	private final TemplateEngine templateEngine;
+
+	public adminService(TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
+    }
 
 	@Autowired
 	private userRepository urepo;
@@ -55,7 +66,7 @@ public class adminService {
 			file.transferTo(new File(npath));
 
 		}
-		
+
 		u.setName(user.getName());
 		u.setAddress(user.getAddress());
 		u.setBatch(user.getBatch());
@@ -95,13 +106,13 @@ public class adminService {
 	public Course findCourseById(int cid) {
 		return crepo.findById(cid).get();
 	}
-	
+
 	@Transactional
 	public void make_payment(String uid, double amount, String receiver) {
 		User student = urepo.findById(uid).get();
 		User receivedBy = urepo.findByEmail(receiver);
-		double previousAmount=student.getPendingFee();
-		double newAmount=previousAmount-amount;
+		double previousAmount = student.getPendingFee();
+		double newAmount = previousAmount - amount;
 
 		payment p = new payment();
 		p.setUser(student);
@@ -113,25 +124,42 @@ public class adminService {
 		prepo.save(p);
 
 	}
+
 	public User findUserById(String id) {
 		return urepo.findById(id).get();
 	}
-	
-	public List<User> findUserBySemesterId(String semesterId){
+
+	public List<User> findUserBySemesterId(String semesterId) {
 		return urepo.findUserBySemesterId(semesterId);
 	}
-	public List<payment> findPaymentByUid(String uid){
+
+	public List<payment> findPaymentByUid(String uid) {
 		return prepo.findPaymentByUid(uid);
 	}
-	
+
 	@Transactional
 	public void increment_semester(String presentId) {
-		
-		String[] parts=presentId.split("-");
-		int sem=Integer.parseInt(parts[1])+1;
-		String newSem= parts[0]+"-"+String.valueOf(sem);
-		urepo.incrementSemester(newSem, presentId,srepo.findById(presentId).get().getSemesterFee());
-		
-		
+
+		String[] parts = presentId.split("-");
+		int sem = Integer.parseInt(parts[1]) + 1;
+		String newSem = parts[0] + "-" + String.valueOf(sem);
+		urepo.incrementSemester(newSem, presentId, srepo.findById(presentId).get().getSemesterFee());
 	}
+
+	 public byte[] generatePdf(String templateName, Map<String, Object> data) {
+	        Context context = new Context();
+	        context.setVariables(data);
+
+	        String htmlContent = templateEngine.process(templateName, context);
+
+	        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+	            ITextRenderer renderer = new ITextRenderer();
+	            renderer.setDocumentFromString(htmlContent);
+	            renderer.layout();
+	            renderer.createPDF(os);
+	            return os.toByteArray();
+	        } catch (Exception e) {
+	            throw new RuntimeException("Error while generating PDF", e);
+	        }
+	    }
 }

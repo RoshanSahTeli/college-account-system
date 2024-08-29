@@ -2,8 +2,13 @@ package com.account.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -126,6 +131,7 @@ public class adminController {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		model.addAttribute("statement", aservice.findPaymentByUid(uid));
+		model.addAttribute("uid", uid);
 		return "statement";
 	}
 	
@@ -134,4 +140,21 @@ public class adminController {
 		aservice.increment_semester(semId);
 		response.sendRedirect("/admin/semester/"+semId);
 	}
+	@GetMapping("/download")
+    public ResponseEntity<byte[]> downloadPdf(@RequestParam("id")String uid) {
+        Map<String, Object> data = new HashMap<>();
+        // Add any additional data you need to pass to the template
+        // For example, you can include the statement data here
+        data.put("statement", aservice.findPaymentByUid(uid));  // Assuming you have a service to get statement data
+
+        byte[] pdfBytes = aservice.generatePdf("statement_template", data);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "statement.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdfBytes);
+    }
 }
