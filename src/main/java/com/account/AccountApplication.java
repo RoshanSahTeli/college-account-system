@@ -10,6 +10,7 @@ public class AccountApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AccountApplication.class, args);
 		System.out.println(new BCryptPasswordEncoder().encode("Spring"));
+		System.out.println("Checking");
 	}
 
 }
