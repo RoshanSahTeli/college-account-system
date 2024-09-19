@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-server
-  namespace: account-app  # Replace with your actual namespace
+  namespace: account-app-namespace  # Replace with your actual namespace
 spec:
   replicas: 1
   selector:
@@ -31,7 +31,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: accountmysql-service
-  namespace: account-app 
+  namespace: account-app-namespace
 spec:
   selector:
     app: mysql-server
