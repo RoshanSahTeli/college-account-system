@@ -12,6 +12,7 @@ public class AccountApplication {
 		System.out.println(new BCryptPasswordEncoder().encode("Spring"));
 		System.out.println("Checking");
 		System.out.println("checking second");
+		System.out.println("Third");
 	}
 
 }
