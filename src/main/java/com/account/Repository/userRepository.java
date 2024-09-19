@@ -29,5 +29,10 @@ public interface userRepository extends JpaRepository<User, String> {
 	@Query("update User u set u.semester.semesterId= :semesterId, u.previousFee=u.pendingFee+u.previousFee,u.pendingFee= :semesterFee where u.semester.semesterId= :presentId")
 	public void incrementSemester(@Param("semesterId")String semesterId,@Param("presentId")String presentId
 			,@Param("semesterFee")double semesterFee);
+	
+	@Modifying
+	@Query("Update User u set u.name= :name, u.email= :email, u.contact= :contact, u.pendingFee= :pendingFee, u.previousFee= :previousFee, u.image= :image where u.uid= :uid")
+	public void UpdateUser(@Param("name")String name,@Param("email")String email,@Param("contact")String contact,
+			@Param("pendingFee")double pendingFee,@Param("previousFee")double previousFee,@Param("image")String image, @Param("uid")String uid);
 
 }

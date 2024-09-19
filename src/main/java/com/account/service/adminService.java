@@ -34,8 +34,8 @@ public class adminService {
 	private final TemplateEngine templateEngine;
 
 	public adminService(TemplateEngine templateEngine) {
-        this.templateEngine = templateEngine;
-    }
+		this.templateEngine = templateEngine;
+	}
 
 	@Autowired
 	private userRepository urepo;
@@ -146,20 +146,41 @@ public class adminService {
 		urepo.incrementSemester(newSem, presentId, srepo.findById(presentId).get().getSemesterFee());
 	}
 
-	 public byte[] generatePdf(String templateName, Map<String, Object> data) {
-	        Context context = new Context();
-	        context.setVariables(data);
+	public byte[] generatePdf(String templateName, Map<String, Object> data) {
+		Context context = new Context();
+		context.setVariables(data);
 
-	        String htmlContent = templateEngine.process(templateName, context);
+		String htmlContent = templateEngine.process(templateName, context);
 
-	        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-	            ITextRenderer renderer = new ITextRenderer();
-	            renderer.setDocumentFromString(htmlContent);
-	            renderer.layout();
-	            renderer.createPDF(os);
-	            return os.toByteArray();
-	        } catch (Exception e) {
-	            throw new RuntimeException("Error while generating PDF", e);
-	        }
-	    }
+		try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+			ITextRenderer renderer = new ITextRenderer();
+			renderer.setDocumentFromString(htmlContent);
+			renderer.layout();
+			renderer.createPDF(os);
+			return os.toByteArray();
+		} catch (Exception e) {
+			throw new RuntimeException("Error while generating PDF", e);
+		}
+	}
+	
+	@Transactional
+	public void update(User user, MultipartFile file,String uid) throws IllegalStateException, IOException {
+		System.out.println("Test upfdate");
+		String path = "C:\\Users\\rosha\\OneDrive\\Desktop\\New folder\\account\\src\\main\\resources\\static\\images\\";
+		String npath = path + file.getOriginalFilename();
+		User u=findUserById(uid);
+		String search="images\\";
+		int i = npath.indexOf(search);
+		System.out.println(npath);
+		String img=npath.substring(i + search.length());
+		if(file.isEmpty()) {
+			urepo.UpdateUser(user.getName(), user.getEmail(), user.getContact(), user.getPendingFee(), user.getPreviousFee(),u.getImage(), uid);
+		}
+		else {
+			urepo.UpdateUser(user.getName(), user.getEmail(), user.getContact(), user.getPendingFee(), user.getPreviousFee(),img, uid);
+			file.transferTo(new File(npath));
+		}
+		
+
+	}
 }

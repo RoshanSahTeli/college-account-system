@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -156,5 +157,18 @@ public class adminController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(pdfBytes);
+    }
+    
+    @GetMapping("/update_form/{id}")
+    public String update_form(Model model,HttpSession session, @PathVariable("id")String id) {
+    	model.addAttribute("update", aservice.findUserById(id));
+    	return "update_form";
+    }
+    
+    @GetMapping("/update/{id}")
+    public String update(@ModelAttribute User user, @PathVariable("id") String uid, @RequestParam("image") MultipartFile file) throws IllegalStateException, IOException {
+        System.out.println("Test");
+        aservice.update(user, file, uid);
+        return "/admin/semester" + user.getUid();
     }
 }

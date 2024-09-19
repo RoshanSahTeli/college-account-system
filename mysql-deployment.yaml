@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-server
+  namespace: account-app  # Replace with your actual namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-server
+  template:
+    metadata:
+      labels:
+        app: mysql-server
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:latest  
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: java  
+            - name: MYSQL_DATABASE
+              value: account  
+            - name: MYSQL_PASSWORD
+              value: java  
+          ports:
+            - containerPort: 3306  
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: accountmysql-service
+  namespace: account-app 
+spec:
+  selector:
+    app: mysql-server
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+ 

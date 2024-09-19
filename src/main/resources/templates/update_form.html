@@ -1,0 +1,93 @@
+<html th:replace="admin_base::layout(~{::section})">
+
+<head>
+
+</head>
+
+<body>
+	<section>
+		<main id="main" class="main">
+
+			<div class="pagetitle">
+				<h1>Lumbini ICT Campus</h1>
+
+			</div><!-- End Page Title -->
+
+			<section class="section">
+				<div class="row">
+					<div class="col-lg-8">
+
+						<div class="card" style="height: 580px;">
+							<div class="card-body">
+								<h5 class="card-title">Make Payment</h5>
+
+								<!-- General Form Elements -->
+								<form th:action="@{'/admin/update/'+${update.uid}}" method="get" enctype="multipart/form-data">
+									
+									<div class="row mb-4">
+										<label for="address" class="col-sm-2 col-form-label">Name</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="name"
+												th:value="${update.name}">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="address" class="col-sm-2 col-form-label">Email</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="email"
+												th:value="${update.email}">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="address" class="col-sm-2 col-form-label">Contact</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="contact"
+												th:value="${update.contact}">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="address" class="col-sm-2 col-form-label">Pending Fee</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="pendingFee"
+												th:value="${update.pendingFee}">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="address" class="col-sm-2 col-form-label">Previous Fee</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="previousFee"
+												th:value="${update.previousFee}">
+										</div>
+									</div>
+									<div class="row mb-4">
+										<label for="address" class="col-sm-2 col-form-label">Image</label>
+										<div class="col-sm-10">
+											<input type="file" class="form-control" name="image"
+												>
+										</div>
+									</div>
+							</div>
+							<div class="row mb-3">
+
+								<div class="col-sm-10"
+									style="display: flex; justify-content: center; align-items: center;">
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+
+							</form><!-- End General Form Elements -->
+
+						</div>
+					</div>
+
+				</div>
+
+
+				</div>
+			</section>
+
+		</main><!-- End #main -->
+	</section>
+</body>
+
+</html>

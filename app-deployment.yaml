@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-app
+  namespace: account-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: account-app
+  template:
+    metadata:
+      labels:
+        app: account-app
+    spec:
+      containers:
+      - name: account-app
+        image: roshanteli/account:latest
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SPRING_APPLICATION_NAME
+          value: "ACCOUNT"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "java"
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://accountmysql-service:3306/account"
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          value: "com.mysql.cj.jdbc.Driver"
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: "update"
+        - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+          value: "org.hibernate.dialect.MySQLDialect"
+        - name: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
+          value: "10MB"
+        - name: SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE
+          value: "10MB"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-app-service
+  namespace: account-app
+spec:
+  selector:
+    app: account-app
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP

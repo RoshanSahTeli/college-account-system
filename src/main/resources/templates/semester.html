@@ -45,7 +45,7 @@
 											<td th:text="${e.contact}"></td>
 											<td th:text="${e.pendingFee}"></td>
 											<td th:text="${e.previousFee}"></td>
-											<td><a class="btn btn-primary">update</a></td>
+											<td><a class="btn btn-primary" th:href="@{'/admin/update_form/'+${e.uid}}">update</a></td>
 											<td><a class="btn btn-success" th:href="@{'/admin/payment_form/'+${e.uid}}">pay</a>  </td>
 											<td> <a class="btn btn-primary" th:href="@{'/admin/statement/'+${e.uid}}">statement</a> </td>
 										</tr>
