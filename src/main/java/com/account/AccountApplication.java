@@ -11,6 +11,7 @@ public class AccountApplication {
 		SpringApplication.run(AccountApplication.class, args);
 		System.out.println(new BCryptPasswordEncoder().encode("Spring"));
 		System.out.println("Checking");
+		System.out.println("checking second");
 	}
 
 }
