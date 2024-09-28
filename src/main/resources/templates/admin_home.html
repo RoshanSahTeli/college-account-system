@@ -1,11 +1,44 @@
 <html th:replace="admin_base::layout(~{::section})">
-	<head>
-		
-	</head>
-	<body>
-		<section>
-			<h1 style="text-align: center; font-size: 100px;">Hello i am Roshan Sah Teli</h1>
-			
-		</section>
-	</body>
+
+<head>
+
+</head>
+
+<body>
+	<section>
+		<main id="main" class="main">
+
+			<div class="pagetitle">
+				<h1>Lumbini ICT Campus</h1>
+
+			</div><!-- End Page Title -->
+
+			<div class="container mt-5">
+				<div class="row">
+					<!-- Card 1 -->
+					<div class="col-md-3" th:each="e:${courses}">
+						<a th:href="@{'/admin/course/'+${e.courseId}}" class="text-decoration-none">
+							<div class="card h-100">
+								<img th:src="@{'/images/'+${e.image}}" style="height: 150px;" class="card-img-top" alt="Card 1 Image">
+								<div class="card-body">
+									<h5 class="card-title" th:text="${e.courseName}"></h5>
+									<p class="card-text">This is the description for card 1.</p>
+								</div>
+							</div>
+						</a>
+					</div>
+
+
+
+				</div>
+			</div>
+
+			<!-- Bootstrap JS -->
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+		</main><!-- End #main -->
+
+	</section>
+</body>
+
 </html>

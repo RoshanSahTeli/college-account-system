@@ -10,24 +10,23 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Course {
-	
+
 	@Id
 	private int courseId;
-	
+
 	private String courseName;
-	
+
 	private double admissionFee;
-	
-	
+
+	private String image;
+
 	private double totalFee;
-	
+
 	@OneToMany(mappedBy = "course")
 	private List<User> students;
-	
-	@OneToMany(mappedBy = "course" )
+
+	@OneToMany(mappedBy = "course")
 	private List<semester> semester;
-	
-	
 
 	public double getAdmissionFee() {
 		return admissionFee;
@@ -65,6 +64,14 @@ public class Course {
 		return totalFee;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public void setTotalFee(double totalFee) {
 		this.totalFee = totalFee;
 	}
@@ -77,14 +84,13 @@ public class Course {
 		this.students = students;
 	}
 
-	
-
-	public Course(int courseId, String courseName, double admissionFee, double totalFee, List<User> students,
-			List<com.account.entity.semester> semester) {
+	public Course(int courseId, String courseName, double admissionFee, String image, double totalFee,
+			List<User> students, List<com.account.entity.semester> semester) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
 		this.admissionFee = admissionFee;
+		this.image = image;
 		this.totalFee = totalFee;
 		this.students = students;
 		this.semester = semester;
@@ -94,8 +100,5 @@ public class Course {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
 
 }

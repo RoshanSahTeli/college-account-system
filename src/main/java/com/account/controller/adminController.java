@@ -52,10 +52,10 @@ public class adminController {
 
 	@PostMapping("/add_student")
 	public void add_student(Model model, HttpSession session, HttpServletResponse response, @ModelAttribute User user,
-			@RequestParam("img") MultipartFile file,@RequestParam("course")int cid) throws IOException {
+			@RequestParam("img") MultipartFile file, @RequestParam("course") int cid) throws IOException {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", session.getAttribute("courses"));
-		aservice.add_student(user, file,cid);
+		aservice.add_student(user, file, cid);
 		response.sendRedirect("/admin/add_student_form");
 
 	}
@@ -84,91 +84,104 @@ public class adminController {
 		aservice.add_course(course);
 		response.sendRedirect("/admin/add_course_form");
 	}
-	
+
 	@GetMapping("/payment_form_sidebar")
-	public String payment_form_sidebar(Model model,HttpSession session) {
+	public String payment_form_sidebar(Model model, HttpSession session) {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		return "payment_form_sidebar";
 	}
-	
+
 	@GetMapping("/payment_form/{id}")
-	public String payment_form(@PathVariable("id")String uid,Model model,HttpSession session) {
+	public String payment_form(@PathVariable("id") String uid, Model model, HttpSession session) {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		model.addAttribute("search", aservice.findUserById(uid));
 		return "payment_form";
 	}
-	
+
 	@PostMapping("/make_payment")
-	public void make_payment(Model model,HttpSession session,HttpServletResponse response,Principal principal,
-			@RequestParam("studentId")String id,@RequestParam("amount")double amount) throws IOException {
-		aservice.make_payment(id, amount,principal.getName());
+	public void make_payment(Model model, HttpSession session, HttpServletResponse response, Principal principal,
+			@RequestParam("studentId") String id, @RequestParam("amount") double amount) throws IOException {
+		aservice.make_payment(id, amount, principal.getName());
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		response.sendRedirect("/admin/payment_form_sidebar");
-		
+
 	}
-	
+
 	@PostMapping("/search")
-	public String search(Model model,HttpSession session,@RequestParam("search")String search) {
+	public String search(Model model, HttpSession session, @RequestParam("search") String search) {
 		model.addAttribute("search", aservice.findUserById(search));
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		session.setAttribute("search", aservice.findUserById(search));
 		return "search";
 	}
-	
+
 	@GetMapping("/semester/{id}")
-	public String semester(Model model,HttpSession session,@PathVariable("id")String semId) {
+	public String semester(Model model, HttpSession session, @PathVariable("id") String semId) {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		model.addAttribute("users", aservice.findUserBySemesterId(semId));
 		model.addAttribute("semId", semId);
 		return "semester";
 	}
+
 	@GetMapping("/statement/{id}")
-	public String statement(@PathVariable("id")String uid,Model model,HttpSession session) {
+	public String statement(@PathVariable("id") String uid, Model model, HttpSession session) {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		model.addAttribute("statement", aservice.findPaymentByUid(uid));
 		model.addAttribute("uid", uid);
 		return "statement";
 	}
-	
+
 	@GetMapping("/increment_semester")
-	public void increment_semester(Model model,HttpSession session,HttpServletResponse response,@RequestParam("id")String semId) throws IOException {
+	public void increment_semester(Model model, HttpSession session, HttpServletResponse response,
+			@RequestParam("id") String semId) throws IOException {
 		aservice.increment_semester(semId);
-		response.sendRedirect("/admin/semester/"+semId);
+		response.sendRedirect("/admin/semester/" + semId);
 	}
+
 	@GetMapping("/download")
-    public ResponseEntity<byte[]> downloadPdf(@RequestParam("id")String uid) {
-        Map<String, Object> data = new HashMap<>();
-        // Add any additional data you need to pass to the template
-        // For example, you can include the statement data here
-        data.put("statement", aservice.findPaymentByUid(uid));  // Assuming you have a service to get statement data
+	public ResponseEntity<byte[]> downloadPdf(@RequestParam("id") String uid) {
+		Map<String, Object> data = new HashMap<>();
+		// Add any additional data you need to pass to the template
+		// For example, you can include the statement data here
+		data.put("statement", aservice.findPaymentByUid(uid)); // Assuming you have a service to get statement data
 
-        byte[] pdfBytes = aservice.generatePdf("statement_template", data);
+		byte[] pdfBytes = aservice.generatePdf("statement_template", data);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "statement.pdf");
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		headers.setContentDispositionFormData("attachment", "statement.pdf");
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(pdfBytes);
-    }
-    
-    @GetMapping("/update_form/{id}")
-    public String update_form(Model model,HttpSession session, @PathVariable("id")String id) {
-    	model.addAttribute("update", aservice.findUserById(id));
-    	return "update_form";
-    }
-    
-    @GetMapping("/update/{id}")
-    public String update(@ModelAttribute User user, @PathVariable("id") String uid, @RequestParam("image") MultipartFile file) throws IllegalStateException, IOException {
-        System.out.println("Test");
-        aservice.update(user, file, uid);
-        return "/admin/semester" + user.getUid();
-    }
+		return ResponseEntity.ok().headers(headers).body(pdfBytes);
+	}
+
+	@GetMapping("/update_form/{id}")
+	public String update_form(Model model, HttpSession session, @PathVariable("id") String id) {
+		model.addAttribute("update", aservice.findUserById(id));
+		return "update_form";
+	}
+
+	@PostMapping("/update/{id}")
+	public void update(@PathVariable("id") String uid, @RequestParam("name") String name,
+			@RequestParam("email") String email, @RequestParam("contact") String contact,
+			@RequestParam("pendingFee") double pendingFee, @RequestParam("previousFee") double previousFee,
+			@RequestParam("image") MultipartFile file, Model model, HttpSession session, HttpServletResponse response)
+			throws IllegalStateException, IOException {
+		System.out.println("Test");
+		aservice.update(name, email, contact, pendingFee, previousFee, file, uid);
+		model.addAttribute("user", session.getAttribute("user"));
+		model.addAttribute("courses", aservice.findAllCourse());
+		response.sendRedirect("/admin/semester/" + aservice.findUserById(uid).getSemester().getSemesterId());
+	}
+	
+	@GetMapping("/pendingFee")
+	public String pendingFee(Model model,HttpSession session) {
+		model.addAttribute("upending", aservice.pendingFee());
+		return "pendingFee";
+	}
 }

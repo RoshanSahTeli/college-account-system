@@ -164,23 +164,29 @@ public class adminService {
 	}
 	
 	@Transactional
-	public void update(User user, MultipartFile file,String uid) throws IllegalStateException, IOException {
-		System.out.println("Test upfdate");
+	public void update(String name,String email,String contact,double pendingFee, double previousFee, MultipartFile file,String uid) throws IllegalStateException, IOException {
+		
 		String path = "C:\\Users\\rosha\\OneDrive\\Desktop\\New folder\\account\\src\\main\\resources\\static\\images\\";
 		String npath = path + file.getOriginalFilename();
 		User u=findUserById(uid);
-		String search="images\\";
-		int i = npath.indexOf(search);
-		System.out.println(npath);
-		String img=npath.substring(i + search.length());
+		
 		if(file.isEmpty()) {
-			urepo.UpdateUser(user.getName(), user.getEmail(), user.getContact(), user.getPendingFee(), user.getPreviousFee(),u.getImage(), uid);
+			urepo.UpdateUser(name, email, contact, pendingFee, previousFee,u.getImage(), uid);
 		}
 		else {
-			urepo.UpdateUser(user.getName(), user.getEmail(), user.getContact(), user.getPendingFee(), user.getPreviousFee(),img, uid);
+			String[] parts=npath.split("images\\\\");
 			file.transferTo(new File(npath));
+			urepo.UpdateUser(name, email, contact, pendingFee, previousFee, parts[1], uid);
 		}
 		
-
+		
+	}
+	
+	public List<User> pendingFee(){
+		return urepo.UserWithPendingFee();
+	}
+	
+	public List<Course> allCourses(){
+		return crepo.findAll();
 	}
 }
