@@ -186,7 +186,11 @@ public class adminService {
 		return urepo.UserWithPendingFee();
 	}
 	
-	public List<Course> allCourses(){
-		return crepo.findAll();
+	public List<User> findStudents(String role){
+		return urepo.findByRole(role);
+	}
+	
+	public void deleteByUid(String uid) {
+		urepo.deleteById(uid);
 	}
 }

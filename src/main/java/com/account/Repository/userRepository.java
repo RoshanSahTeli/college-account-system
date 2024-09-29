@@ -37,4 +37,6 @@ public interface userRepository extends JpaRepository<User, String> {
 	
 	@Query("select u from User u where u.pendingFee>0")
 	public List<User>UserWithPendingFee();
+	
+	public List<User> findByRole(String role);
 }

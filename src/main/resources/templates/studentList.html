@@ -1,0 +1,53 @@
+<html th:replace="admin_base::layout(~{::section})">
+
+<body>
+	<section>
+		<main id="main" class="main">
+
+			<div class="pagetitle">
+				<h1>Lumbini ICT Campus</h1>
+
+			</div><!-- End Page Title -->
+
+
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Student List</h5>
+
+					<!-- Default Table -->
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Image</th>
+								<th scope="col">ID</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Contact</th>
+								<th scope="col">Semester</th>
+								<th scope="col">Update</th>
+								<th scope="col">Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="e:${students}">
+								<th> <img th:src="${'/images/'+e.image}" style="width: 35px;  height: 35px;"> </th>
+								<td th:text="${e.uid}"></td>
+								<td th:text="${e.name}"></td>
+								<td th:text="${e.email}"></td>
+								<td th:text="${e.contact}"> </td>
+								<td th:text="${e.semester.semesterId}"></td>
+								<td> <a th:href="@{'/admin/update_form/'+${e.uid}}" class="btn btn-primary">update</a> </td>
+								<td> <a class="btn btn-danger" th:href="@{'/admin/deleteUser/'+${e.uid}}"> delete</a> </td>
+							</tr>
+
+						</tbody>
+					</table>
+					<!-- End Default Table Example -->
+				</div>
+			</div>
+
+		</main><!-- End #main -->
+	</section>
+</body>
+
+</html>

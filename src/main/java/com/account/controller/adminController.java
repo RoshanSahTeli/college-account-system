@@ -184,4 +184,20 @@ public class adminController {
 		model.addAttribute("upending", aservice.pendingFee());
 		return "pendingFee";
 	}
+	@GetMapping("/studentList")
+	public String studentList(Model model,HttpSession session) {
+		model.addAttribute("students", aservice.findStudents("USER"));
+		model.addAttribute("user", session.getAttribute("user"));
+		model.addAttribute("courses", aservice.findAllCourse());
+		return "studentList";
+	}
+	
+
+	@GetMapping("/deleteUser/{id}")
+	public void deleteByUid(Model model,HttpSession session,@PathVariable("id")String uid,HttpServletResponse response) throws IOException {
+		aservice.deleteByUid(uid);
+		model.addAttribute("user", session.getAttribute("user"));
+		model.addAttribute("courses", aservice.findAllCourse());
+		response.sendRedirect("/admin/studentList");
+	}
 }
