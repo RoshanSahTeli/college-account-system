@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" th:replace="userBase::layout(~{::section})" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <main id="main" class="main">
+
+            <div class="pagetitle">
+                <h1>Lumbini ICT Campus</h1>
+
+            </div><!-- End Page Title -->
+
+
+            <div class="container mt-5">
+                <div class="card" style="max-width: 800px; margin: auto;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <img th:src="@{'/images/'+${user.image}}" alt="User Image" class="rounded-circle mr-3"
+                                 style="width: 100px; height: 100px;">
+                            <h5 class="card-title text-center flex-grow-1" style="font-size: 25px; margin-top: 15px;"
+                                th:text="${user.name}"></h5>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">User ID:</h6>
+                                <p class="card-text" th:text="${user.uid}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Semester Fee</h6>
+                                <p class="card-text" th:text="${user.semester.semesterFee}"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Email:</h6>
+                                <p class="card-text" th:text="${user.email}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Pending Semester Fee:</h6>
+                                <p class="card-text" th:text="${user.pendingFee}"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Phone:</h6>
+                                <p class="card-text" th:text="${user.contact}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Previous Fee:</h6>
+                                <p class="card-text" th:text="${user.previousFee}"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Course:</h6>
+                                <p class="card-text" th:text="${user.course.courseName}"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Total Amount:</h6>
+                                <p class="card-text"
+                                   th:text="${user.pendingFee+user.previousFee}"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <h6 class="card-subtitle mb-2 text-muted">Semester:</h6>
+                                <p class="card-text" th:text="${user.semester.semesterName}"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12 text-center">
+                                <!--<a th:href="@{'/admin/payment_form/'+${user.uid}}" class="btn btn-primary">Pay</a>
+                               --> <a th:href="@{/user/statement}" class="btn btn-secondary" style="margin-left: 20px;">Statement</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bootstrap JS and dependencies -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        </main><!-- End #main -->
+    </section>
+</body>
+</html>
