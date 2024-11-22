@@ -193,4 +193,9 @@ public class adminService {
 	public void deleteByUid(String uid) {
 		urepo.deleteById(uid);
 	}
+
+	@Transactional
+	public void notify(String uid,String message){
+		urepo.updateMessage(message,uid);
+	}
 }

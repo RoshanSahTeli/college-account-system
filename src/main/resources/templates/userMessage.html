@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="userBase::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<section>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Lumbini ICT Campus</h1>
+
+        </div><!-- End Page Title -->
+
+
+
+                <!-- End Default Table Example -->
+         <h1 th:text="${message}"></h1>
+        <div style="text-align: center;" class="mydiv"><a th:href="@{/user/pay}" style="">Pay</a></div>
+    </main><!-- End #main -->
+</section>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.account.controller;
 
 
 import com.account.entity.User;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,13 @@ public class userController {
         model.addAttribute("user",session.getAttribute("user"));
         model.addAttribute("statement",aservice.findPaymentByUid(u.getUid()));
         return "userStatement";
+    }
+    @GetMapping("/message")
+    public String message(Model model, HttpSession session, HttpServletResponse response){
+        User u= (User) session.getAttribute("user");
+        model.addAttribute("message",u.getMessage());
+        model.addAttribute("user",u);
+        return "userMessage";
     }
 
 }

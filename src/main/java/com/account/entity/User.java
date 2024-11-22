@@ -3,15 +3,7 @@ package com.account.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class User {
@@ -41,6 +33,9 @@ public class User {
 
 	private double previousFee;
 
+	@Column(nullable = true)
+	private String message;
+
 	private LocalDateTime addedDate;
 
 	@OneToMany(mappedBy = "user")
@@ -55,6 +50,14 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name = "semesterId", referencedColumnName = "semesterId")
 	private semester semester;
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
 	public double getPendingFee() {
 		return pendingFee;
@@ -195,7 +198,7 @@ public class User {
 
 
 	public User(String uid, String name, String email, String role, String password, String contact, String address,
-			String image, String batch, String gender, double pendingFee, double previousFee, LocalDateTime addedDate,
+			String image, String batch, String gender, double pendingFee, double previousFee,String message, LocalDateTime addedDate,
 			List<payment> payments, List<payment> paymentReceived, Course course,
 			com.account.entity.semester semester) {
 		super();
@@ -210,6 +213,7 @@ public class User {
 		this.batch = batch;
 		this.gender = gender;
 		this.pendingFee = pendingFee;
+		this.message=message;
 		this.previousFee = previousFee;
 		this.addedDate = addedDate;
 		this.payments = payments;

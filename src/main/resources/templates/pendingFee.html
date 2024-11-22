@@ -30,7 +30,7 @@
 											<td th:text="${e.name}"></td>
 											<td th:text="${e.semester.semesterId}"></td>
 											<td th:text="${e.pendingFee}"></td>
-											<td> <a href="#">Mail</a> </td>
+											<td> <a th:href="@{'/admin/notify/'+${e.uid}}">Message</a> </td>
 										</tr>
 			
 									</tbody>

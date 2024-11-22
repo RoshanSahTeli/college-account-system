@@ -39,4 +39,8 @@ public interface userRepository extends JpaRepository<User, String> {
 	public List<User>UserWithPendingFee();
 	
 	public List<User> findByRole(String role);
+
+	@Modifying
+	@Query("update User u set u.message= :message where u.uid= :uid")
+	public void updateMessage(@Param("message") String message,@Param("uid")String uid);
 }

@@ -2,6 +2,7 @@ package com.account.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -199,5 +200,19 @@ public class adminController {
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", aservice.findAllCourse());
 		response.sendRedirect("/admin/studentList");
+	}
+
+	@GetMapping("/notify/{id}")
+	public void notify(@PathVariable("id")String uid,Model model,HttpSession session,HttpServletResponse response) throws IOException {
+		User u=aservice.findUserById(uid);
+		double totalPending=u.getPendingFee()+u.getPreviousFee();
+		String message="Dear "+u.getName()+", please note that today on "+ LocalDate.now()+", the deadline to pay your semester fee is reached." +
+				" Kindly ensure payment of total"+totalPending+" is made before the due date to avoid any late fees or penalties. Thank you.";
+		model.addAttribute("message",message);
+		aservice.notify(uid,message);
+		model.addAttribute("user",session.getAttribute("user"));
+		model.addAttribute("courses",session.getAttribute("courses"));
+		response.sendRedirect("/admin/pendingFee");
+		System.out.println(uid);
 	}
 }
