@@ -54,6 +54,7 @@ public class adminController {
 	@PostMapping("/add_student")
 	public void add_student(Model model, HttpSession session, HttpServletResponse response, @ModelAttribute User user,
 			@RequestParam("img") MultipartFile file, @RequestParam("course") int cid) throws IOException {
+		System.out.println(cid);
 		model.addAttribute("user", session.getAttribute("user"));
 		model.addAttribute("courses", session.getAttribute("courses"));
 		aservice.add_student(user, file, cid);
@@ -164,6 +165,8 @@ public class adminController {
 	@GetMapping("/update_form/{id}")
 	public String update_form(Model model, HttpSession session, @PathVariable("id") String id) {
 		model.addAttribute("update", aservice.findUserById(id));
+		model.addAttribute("user",session.getAttribute("user"));
+		model.addAttribute("courses",session.getAttribute("courses"));
 		return "update_form";
 	}
 
@@ -183,6 +186,8 @@ public class adminController {
 	@GetMapping("/pendingFee")
 	public String pendingFee(Model model,HttpSession session) {
 		model.addAttribute("upending", aservice.pendingFee());
+		model.addAttribute("user",session.getAttribute("user"));
+		model.addAttribute("courses",session.getAttribute("courses"));
 		return "pendingFee";
 	}
 	@GetMapping("/studentList")
@@ -213,6 +218,6 @@ public class adminController {
 		model.addAttribute("user",session.getAttribute("user"));
 		model.addAttribute("courses",session.getAttribute("courses"));
 		response.sendRedirect("/admin/pendingFee");
-		System.out.println(uid);
+
 	}
 }

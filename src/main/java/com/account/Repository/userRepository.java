@@ -35,7 +35,7 @@ public interface userRepository extends JpaRepository<User, String> {
 	public void UpdateUser(@Param("name")String name,@Param("email")String email,@Param("contact")String contact,
 			@Param("pendingFee")double pendingFee,@Param("previousFee")double previousFee,@Param("image")String image, @Param("uid")String uid);
 	
-	@Query("select u from User u where u.pendingFee>0")
+	@Query("select u from User u where u.pendingFee>0 and u.role ='USER'")
 	public List<User>UserWithPendingFee();
 	
 	public List<User> findByRole(String role);
